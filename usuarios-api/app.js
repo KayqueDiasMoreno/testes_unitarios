@@ -122,23 +122,23 @@ app.get('/relatorios/emails-duplicados', (req, res) => {
   const inicio = process.hrtime.bigint();
 
   // ===== VERSÃO 1 — LENTA: laço dentro de laço, O(n²) =====
-  const duplicados = [];
+ /*const duplicados = [];
   for (let i = 0; i < baseGrande.length; i++) {
     for (let j = i + 1; j < baseGrande.length; j++) {
       if (baseGrande[i].email === baseGrande[j].email && !duplicados.includes(baseGrande[i].email)) {
         duplicados.push(baseGrande[i].email);
       }
     }
-  }
+  }*/
 
   // ===== VERSÃO 2 — RÁPIDA: Set, O(n) =====
   // Para usar: comente o bloco da VERSÃO 1 acima e descomente as linhas abaixo.
-  // const vistos = new Set();
-  // const duplicados = new Set();
-  // for (const usuario of baseGrande) {
-  //   if (vistos.has(usuario.email)) duplicados.add(usuario.email);
-  //   else vistos.add(usuario.email);
-  // }
+  const vistos = new Set();
+   const duplicados = new Set();
+   for (const usuario of baseGrande) {
+     if (vistos.has(usuario.email)) duplicados.add(usuario.email);
+     else vistos.add(usuario.email);
+   }
 
   const tempoMs = Number(process.hrtime.bigint() - inicio) / 1e6;
   const lista = [...duplicados].sort();
